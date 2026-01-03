@@ -1,0 +1,10 @@
+<ul class="nav-menu">
+{% for link in links %}
+    <li class="{{ link.classes }}">
+        <a href="{{ link.get_absolute_url }}" target="{{ link.target }}">{{ link.title }}</a>
+        {% if link.children.all %}
+            {% include "navs/links.html" with links=link.children.all %}
+        {% endif %}
+    </li>
+{% endfor %}
+</ul>
