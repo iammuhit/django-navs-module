@@ -1,0 +1,2 @@
+#result_list tbody tr.ui-sortable-helper { background-color: var(--darkened-bg); border: 1px dashed #ccc; }
+#result_list tbody tr:hover { cursor: move; }
