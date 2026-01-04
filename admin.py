@@ -3,7 +3,6 @@ import json
 from django.contrib import admin
 from django.http import JsonResponse
 from django.urls import path
-from django.views.decorators.http import require_POST
 
 from app.modules.navs.models import Link, Menu
 
@@ -28,12 +27,12 @@ class LinkAdmin(admin.ModelAdmin):
 
     class Media:
         css = {'all': [
-            'admin/css/vendor/jquery-ui.min.css',
-            'admin/css/sortable.css',
+            'admin/navs/css/vendor/jquery-ui.min.css',
+            'admin/navs/css/sortable.css',
         ]}
         js = [
-            'admin/js/vendor/jquery-ui.min.js',
-            'admin/js/sortable.js',
+            'admin/navs/js/vendor/jquery-ui.min.js',
+            'admin/navs/js/sortable.js',
         ]
 
     def get_urls(self):
