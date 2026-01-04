@@ -2,6 +2,7 @@ import json
 
 from django.contrib import admin
 from django.http import JsonResponse
+from django.template.loader import render_to_string
 from django.urls import path
 
 from app.modules.navs.models import Link, Menu
@@ -13,17 +14,21 @@ class LinkInline(admin.TabularInline):
 
 @admin.register(Menu)
 class MenuAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug', 'is_active')
+    list_display = ['name', 'slug', 'is_active', 'action_buttons']
+    search_fields = ['name', 'slug', 'description']
     prepopulated_fields = {'slug': ['name']}
     inlines = [LinkInline]
 
+    @admin.display(description='Actions')
+    def action_buttons(self, object):
+        return render_to_string('admin/partials/buttons.html', {'object': object, 'opts': self.opts})
+
 @admin.register(Link)
 class LinkAdmin(admin.ModelAdmin):
-    list_display = ('title', 'menu', 'parent', 'url', 'is_active')
-    list_filter = ('menu', 'is_active')
-    list_editable = []
-    ordering = ('order',)
-    search_fields = ('title',)
+    list_display = ['title', 'menu', 'parent', 'url', 'is_active']
+    list_filter = ['menu__name', 'is_active']
+    search_fields = ['title']
+    ordering = ['order']
 
     class Media:
         css = {'all': [
