@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.urls import path
+from django.utils.translation import gettext_lazy as _
 
 from app.modules.navs.models import Link, Menu
 
@@ -14,14 +15,45 @@ class LinkInline(admin.TabularInline):
 
 @admin.register(Menu)
 class MenuAdmin(admin.ModelAdmin):
-    list_display = ['name', 'slug', 'is_active', 'action_buttons']
+    list_display = ['name', 'slug', 'description', 'is_active', 'action_buttons']
+    sortable_by = ['name', 'slug']
     search_fields = ['name', 'slug', 'description']
     prepopulated_fields = {'slug': ['name']}
     inlines = [LinkInline]
+    actions = ['active_selected', 'delete_selected']
 
-    @admin.display(description='Actions')
+    def changelist_view(self, request, extra_context = None):
+        self._http_request = request
+        return super().changelist_view(request, extra_context)
+    
+    def get_action(self, action):
+        action = super().get_action(action)
+        if 'delete_selected' in action:
+            action    = list(action)
+            action[2] = f'Delete {self.opts.verbose_name_plural.capitalize()}'
+
+        return action if type(action) is tuple else tuple(action)
+    
+    @admin.action(permissions=['change'], description=_('Mark as Active'))
+    def active_selected(self, request, queryset):
+        queryset.update(is_active=True)
+
+    @admin.display(description=_('Actions'))
     def action_buttons(self, object):
-        return render_to_string('admin/partials/buttons.html', {'object': object, 'opts': self.opts})
+        request = getattr(self, '_http_request', None)
+        perms   = self.get_model_perms(request)
+        
+        return render_to_string('admin/navs/menu/actions_field.html', {
+            'opts'  : self.opts,
+            'object': object,
+            'perms' : {
+                'has_add_permission'   : perms.get('add'),
+                'has_view_permission'  : perms.get('view'),
+                'has_change_permission': perms.get('change'),
+                'has_delete_permission': perms.get('delete'),
+            },
+        })
+
 
 @admin.register(Link)
 class LinkAdmin(admin.ModelAdmin):

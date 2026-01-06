@@ -1,7 +1,0 @@
-{% load i18n admin_urls static %}
-
-<div class="action-buttons">
-    <a class="action-link view-related" href="{% url opts|admin_urlname:'history' object.pk|admin_urlquote %}" title="View"><img src="{% static 'admin/img/icon-viewlink.svg' %}" alt="View" width="24" height="24"></a>
-    <a class="action-link change-related" href="{% url opts|admin_urlname:'change' object.pk|admin_urlquote %}" title="Edit"><img src="{% static 'admin/img/icon-changelink.svg' %}" alt="Edit" width="24" height="20"></a>
-    <a class="action-link delete-related" href="{% url opts|admin_urlname:'delete' object.pk|admin_urlquote %}" title="Delete"><img src="{% static 'admin/img/icon-deletelink.svg' %}" alt="Delete" width="24" height="24"></a>
-</div>

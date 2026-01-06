@@ -1,0 +1,21 @@
+{% load i18n admin_urls static %}
+
+<div class="field-actions--buttons text-center">
+    {% block actions-field %}
+        <ul class="object-tools field-actions">
+            {% block actions-field-buttons %}
+                {% if perms.has_view_permission %}
+                    <li><a href="{% url opts|admin_urlname:'history' object.pk|admin_urlquote %}" class="viewlink">{% trans 'View' %}</a></li>
+                {% endif %}
+
+                {% if perms.has_change_permission %}
+                    <li><a href="{% url opts|admin_urlname:'change' object.pk|admin_urlquote %}" class="changelink _popup">{% trans 'Edit' %}</a></li>
+                {% endif %}
+
+                {% if perms.has_delete_permission %}
+                    <li><a href="{% url opts|admin_urlname:'delete' object.pk|admin_urlquote %}" class="deletelink">{% trans 'Delete' %}</a></li>
+                {% endif %}
+            {% endblock %}
+        </ul>
+    {% endblock %}
+</div>

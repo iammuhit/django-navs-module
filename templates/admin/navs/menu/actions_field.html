@@ -1,0 +1,15 @@
+{% extends 'admin/actions_field.html' %}
+
+{% load i18n admin_urls static %}
+
+{% block actions-field-buttons %}
+    {% if perms.has_add_permission %}
+        <li>
+            <a href="{% url 'admin:navs_link_changelist' %}?menu__slug={{ object.slug }}" class="ui-state-active">
+                {% trans 'Links' %} <span class="ui-icon ui-icon-link"></span>
+            </a>
+        </li>
+    {% endif %}
+
+    {{ block.super }}
+{% endblock %}

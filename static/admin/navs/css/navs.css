@@ -1,0 +1,14 @@
+/* ChangeList - Results */
+#changelist table th, #changelist table td { vertical-align: middle; }
+
+/* Actions - Buttons */
+.column-actions { text-align: right; }
+.field-actions { margin: 0; padding-left: 0; padding-right: 0; }
+.field-actions li + li { margin-left: 0.1rem; }
+.field-actions a[class^="ui-state-"] { padding-right: 0.75rem; border-width: 0; }
+.field-actions a.addlink, .field-actions a.viewlink,
+.field-actions a.changelink, .field-actions a.deletelink {
+    background-repeat: no-repeat;
+    background-position: right 7px center;
+    padding-right: 26px;
+}
