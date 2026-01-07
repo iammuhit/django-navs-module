@@ -30,11 +30,11 @@ class MenuAdmin(admin.ModelAdmin):
 
     class Media:
         css = {'all': [
-            'admin/navs/css/vendor/jquery-ui.min.css',
+            'admin/css/vendor/jquery-ui/jquery-ui.min.css',
             'admin/navs/css/navs.css',
         ]}
         js = [
-            'admin/navs/js/vendor/jquery-ui.min.js',
+            'admin/js/vendor/jquery-ui/jquery-ui.min.js',
             'admin/js/jquery.init.js',
             'admin/navs/js/navs.js',
         ]
@@ -88,12 +88,12 @@ class LinkAdmin(admin.ModelAdmin):
 
     class Media:
         css = {'all': [
-            'admin/navs/css/vendor/jquery-ui.min.css',
+            'admin/css/vendor/jquery-ui/jquery-ui.min.css',
             'admin/navs/css/navs.css',
             'admin/navs/css/sortable.css',
         ]}
         js = [
-            'admin/navs/js/vendor/jquery-ui.min.js',
+            'admin/js/vendor/jquery-ui/jquery-ui.min.js',
             'admin/js/jquery.init.js',
             'admin/navs/js/navs.js',
             'admin/navs/js/sortable.js',
