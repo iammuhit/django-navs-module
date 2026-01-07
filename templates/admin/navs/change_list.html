@@ -3,17 +3,10 @@
 {% load i18n static admin_urls %}
 
 {% block extrastyle %} {{ block.super }}
-    <link rel="stylesheet" href="{% static 'admin/navs/css/vendor/jquery-ui.min.css' %}">
-    <link rel="stylesheet" href="{% static 'admin/navs/css/navs.css' %}">
     <style type="text/css">
         .field-actions a.addlink { background-image: url('{% static "admin/img/icon-addlink.svg" %}'); }
         .field-actions a.viewlink { background-image: url('{% static "admin/img/icon-viewlink.svg" %}'); }
         .field-actions a.changelink { background-image: url('{% static "admin/img/icon-changelink.svg" %}'); }
         .field-actions a.deletelink { background-image: url('{% static "admin/img/icon-deletelink.svg" %}'); }
     </style>
-{% endblock %}
-
-{% block extrahead %} {{ block.super }}
-    <script src="{% static 'admin/navs/js/vendor/jquery-ui.min.js' %}"></script>
-    <script src="{% static 'admin/navs/js/navs.js' %}"></script>
 {% endblock %}

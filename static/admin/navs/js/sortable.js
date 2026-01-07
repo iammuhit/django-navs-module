@@ -38,7 +38,7 @@
                     
                     // Send update to server
                     $.ajax({
-                        url: 'order/',
+                        url: '/admin/navs/link/order/',
                         method: 'POST',
                         contentType: 'application/json',
                         data: JSON.stringify({items: items}),
