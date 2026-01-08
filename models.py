@@ -1,8 +1,10 @@
 from django.db import models
 from django.urls import NoReverseMatch, reverse
+from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
 from app.modules.navs import DB_TABLE_PREFIX
+from app.modules.pages.models import Page
 
 
 class Menu(models.Model):
@@ -21,6 +23,10 @@ class Menu(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.slug) or slugify(self.title)
+        return super().save(*args, **kwargs)
 
 
 class Link(models.Model):
@@ -34,6 +40,7 @@ class Link(models.Model):
     title      = models.CharField(max_length=150)
     url        = models.CharField(max_length=255, blank=True)
     url_name   = models.CharField(max_length=255, blank=True)
+    page       = models.ForeignKey(Page, related_name='page_links', null=True, blank=True, on_delete=models.SET_NULL)
     icon       = models.CharField(max_length=150, blank=True)
     order      = models.PositiveIntegerField(default=0)
     target     = models.CharField(max_length=25, choices=TARGET_CHOICES, blank=True)
@@ -53,9 +60,12 @@ class Link(models.Model):
         return self.title
     
     def get_absolute_url(self):
+        if self.page:
+            return self.page.get_absolute_url()
+
         if self.url_name:
             try:
                 return reverse(self.url_name)
             except NoReverseMatch:
-                return '#'
-        return self.url
+                pass
+        return self.url or str('#')
