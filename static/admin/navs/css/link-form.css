@@ -1,0 +1,55 @@
+.link-type-selector {
+    margin: 15px 0;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.link-type-selector fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.link-type-selector legend {
+    padding: 0;
+    margin: 0 0 10px 0;
+    font-weight: bold;
+}
+
+.link-type-selector ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 20px;
+}
+
+.link-type-selector li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.link-type-selector input[type="radio"] {
+    cursor: pointer;
+}
+
+.link-type-selector label {
+    cursor: pointer;
+    margin: 0;
+    font-weight: normal;
+}
+
+.field-page,
+.field-url_name,
+.field-url {
+    transition: all 0.3s ease;
+}
+
+.field-page.hidden,
+.field-url_name.hidden,
+.field-url.hidden {
+    display: none;
+}

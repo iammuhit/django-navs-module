@@ -6,6 +6,12 @@ from django.template.loader import render_to_string
 from django.urls import path
 from django.utils.translation import gettext_lazy as _
 
+from app.modules.navs.forms import (
+    LinkForm,
+    PageLinkForm,
+    RouteLinkForm,
+    URLLinkForm
+)
 from app.modules.navs.models import Link, Menu
 
 
@@ -13,6 +19,7 @@ class LinkInline(admin.TabularInline):
     model  = Link
     extra  = 1
     fields = ['title', 'menu', 'parent', 'url', 'url_name']
+
 
 @admin.register(Menu)
 class MenuAdmin(admin.ModelAdmin):
@@ -74,29 +81,28 @@ class MenuAdmin(admin.ModelAdmin):
 
 @admin.register(Link)
 class LinkAdmin(admin.ModelAdmin):
-    list_display  = ['title', 'menu', 'parent', 'url', 'is_active']
-    list_editable = ['menu', 'parent', 'url', 'is_active']
+    list_display  = ['title', 'menu', 'parent', 'link_type', 'is_active']
+    list_editable = ['menu', 'parent', 'is_active']
     list_filter   = ['menu__slug', 'is_active']
     search_fields = ['title', 'menu__name']
     sortable_by   = ['title', 'menu__name']
     ordering      = ['order']
-
-    fieldsets = [
-        (_('General'), {'fields': ['menu', 'title', 'url', 'url_name']}),
-        (_('Options'), {'fields': ['parent', 'target', 'icon', 'classes', 'permission', 'is_active'], 'classes': ['collapse']}),
-    ]
 
     class Media:
         css = {'all': [
             'admin/css/vendor/jquery-ui/jquery-ui.min.css',
             'admin/navs/css/navs.css',
             'admin/navs/css/sortable.css',
+            'admin/navs/css/link-form.css',
+            'admin/navs/css/link-modal.css',
         ]}
         js = [
             'admin/js/vendor/jquery-ui/jquery-ui.min.js',
             'admin/js/jquery.init.js',
             'admin/navs/js/navs.js',
             'admin/navs/js/sortable.js',
+            'admin/navs/js/link-form.js',
+            'admin/navs/js/link-modal.js',
         ]
 
     def get_urls(self):
@@ -119,25 +125,44 @@ class LinkAdmin(admin.ModelAdmin):
 
     def changelist_view(self, request, extra_context = {}):
         params = self.get_preserved_params(request)
-        slug   = params.get('menu_slug')
+        menu_slug = params.get('menu_slug') or request.GET.get('menu__slug')
 
-        if slug:
-            extra_context['menu_slug'] = slug
-            extra_context['title'] = f'Links for {slug}'
+        if menu_slug:
+            extra_context['menu_slug'] = menu_slug
+            extra_context['title'] = f'Links for {menu_slug.capitalize()}'
         
         return super().changelist_view(request, extra_context)
     
     def get_form(self, request, obj=None, **kwargs):
-        form   = super().get_form(request, obj, **kwargs)
         params = self.get_preserved_params(request)
-        slug   = params.get('menu_slug')
+        menu_slug = params.get('menu_slug') or request.GET.get('menu__slug')
+        link_type = params.get('link_type') or request.GET.get('link_type')
+        
+        # If editing an existing link, detect type from object
+        if obj and not link_type:
+            if obj.page:
+                link_type = 'page'
+            elif obj.url_name:
+                link_type = 'url_name'
+            else:
+                link_type = 'url'
+        
+       # Select appropriate form based on link type
+        if link_type == 'page':
+            self.form = PageLinkForm
+        elif link_type == 'url_name':
+            self.form = RouteLinkForm
+        elif link_type == 'url':
+            self.form = URLLinkForm
+        else:
+            self.form = LinkForm
 
         # Pre-populate and hide menu field when adding via slug
-        if slug and not obj:
-            try:
-                from django import forms
+        form = super().get_form(request, obj, **kwargs)
 
-                menu = Menu.objects.get(slug=slug)
+        if menu_slug and not obj:
+            try:
+                menu = Menu.objects.get(slug=menu_slug)
                 form.base_fields['menu'].initial = menu.pk
                 # form.base_fields['menu'].widget = forms.HiddenInput()
                 form.base_fields['menu'].widget.attrs['readonly'] = True
@@ -146,11 +171,54 @@ class LinkAdmin(admin.ModelAdmin):
                 pass
         
         return form
+
+    def get_fieldsets(self, request, obj=None):
+        params = self.get_preserved_params(request)
+        link_type = params.get('link_type') or request.GET.get('link_type')
+        
+        if obj and not link_type:
+            if obj.page:
+                link_type = 'page'
+            elif obj.url_name:
+                link_type = 'url_name'
+            else:
+                link_type = 'url'
+        
+        if link_type == 'page':
+            return [
+                (_('General'), {'fields': ['menu', 'title', 'page']}),
+                (_('Options'), {'fields': ['parent', 'target', 'icon', 'classes', 'permission', 'is_active'], 'classes': ['collapse']}),
+            ]
+        elif link_type == 'url_name':
+            return [
+                (_('General'), {'fields': ['menu', 'title', 'url_name']}),
+                (_('Options'), {'fields': ['parent', 'target', 'icon', 'classes', 'permission', 'is_active'], 'classes': ['collapse']}),
+            ]
+        elif link_type == 'url':
+            return [
+                (_('General'), {'fields': ['menu', 'title', 'url']}),
+                (_('Options'), {'fields': ['parent', 'target', 'icon', 'classes', 'permission', 'is_active'], 'classes': ['collapse']}),
+            ]
+        else:
+            return [
+                (_('General'), {'fields': ['menu', 'title', 'link_type', 'page', 'url_name', 'url']}),
+                (_('Options'), {'fields': ['parent', 'target', 'icon', 'classes', 'permission', 'is_active'], 'classes': ['collapse']}),
+            ]
+    
+    @admin.display(description=_('Type'))
+    def link_type(self, obj):
+        if obj.page:
+            return f'Page: {obj.page.title}'
+        elif obj.url_name:
+            return f'Route: {obj.url_name}'
+        elif obj.url:
+            return f'URL: {obj.url}'
+        return '—'
     
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
         params   = self.get_preserved_params(request)
-        slug     = params.get('menu_slug')
+        slug     = params.get('menu_slug') or request.GET.get('menu__slug')
         
         if slug:
             queryset = queryset.filter(menu__slug=slug)
