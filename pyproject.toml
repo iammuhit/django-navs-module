@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools >= 80.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+namespaces = true
+where = ["src"]
+include = ["mayacms*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "mayacms.contrib.navs.__version__"}
+
+[project]
+name = "mayacms-navs-module"
+dynamic = ["version"]
+requires-python = ">= 3.14"
+authors = [{name = "Nurul Amin Muhit", email = "me@muhit.me"}]
+maintainers = [{name = "Mayarun Labs", email = "hello@mayarun.io"}]
+description = "The navigation module for MayaCMS."
+readme = "readme.rst"
+license = "license.txt"
+keywords = ["django", "mayacms", "modules", "navigation", "navs", "menus", "links"]
+dependencies = ["mayacms >= 0.1"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Web Environment",
+    "Environment :: Plugins",
+    "Framework :: Django",
+    "Framework :: Django :: 6.0",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Software Development",
+]
+
+[project.urls]
+Homepage = "https://muhit.me"
+Documentation = "https://readthedocs.org"
+Repository = "https://github.com/iammuhit/django-navs-module.git"
