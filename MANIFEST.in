@@ -1,0 +1,2 @@
+recursive-include mayacms/contrib/navs/static *
+recursive-include mayacms/contrib/navs/templates *
