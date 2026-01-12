@@ -6,9 +6,11 @@
 *.log
 *.pot
 *.pyc
+*.egg-info
 __pycache__
 db.sqlite3
-media
+media/*
+build/*
 
 ## PyCharm IDE
 .idea/*
