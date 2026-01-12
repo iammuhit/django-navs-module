@@ -1,4 +1,4 @@
 recursive-include src/mayacms/contrib/navs/static *
 recursive-include src/mayacms/contrib/navs/templates *
-recursive-exclude src/mayacms/contrib/navs/* *.pyc
-recursive-exclude src/mayacms/contrib/navs/* *.scssc
+recursive-exclude src/mayacms/contrib/navs/**/* *.pyc
+recursive-exclude src/mayacms/contrib/navs/**/* *.scssc
