@@ -17,8 +17,8 @@ requires-python = ">= 3.14"
 authors = [{name = "Nurul Amin Muhit", email = "me@muhit.me"}]
 maintainers = [{name = "Mayarun Labs", email = "hello@mayarun.io"}]
 description = "The navigation module for MayaCMS."
-readme = "readme.rst"
-license = "license.txt"
+readme = {file = "readme.rst", content-type = "text/x-rst"}
+license = { file = "license.txt" }
 keywords = ["django", "mayacms", "modules", "navigation", "navs", "menus", "links"]
 dependencies = ["mayacms >= 0.1", "mayacms-pages-module >= 0.2"]
 classifiers = [
