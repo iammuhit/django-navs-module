@@ -6,13 +6,13 @@ from django.template.loader import render_to_string
 from django.urls import path
 from django.utils.translation import gettext_lazy as _
 
-from app.modules.navs.forms import (
+from mayacms.contrib.navs.forms import (
     LinkForm,
     PageLinkForm,
     RouteLinkForm,
     URLLinkForm
 )
-from app.modules.navs.models import Link, Menu
+from mayacms.contrib.navs.models import Link, Menu
 
 
 class LinkInline(admin.TabularInline):

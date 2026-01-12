@@ -1,8 +1,8 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
-from app.modules.navs.models import Link, Menu
-from app.modules.pages.models import Page
+from mayacms.contrib.navs.models import Link, Menu
+from mayacms.contrib.pages.models import Page
 
 
 class BaseLinkForm(forms.ModelForm):
@@ -73,7 +73,7 @@ class RouteLinkForm(BaseLinkForm):
             'url_name': forms.TextInput(attrs={
                 'class': 'form-control vTextField',
                 'maxlength': 255,
-                'placeholder': 'Example: app.modules.pages:pages.home',
+                'placeholder': 'Example: mayacms.contrib.pages:pages.home',
                 'required': True
             }),
         }
@@ -163,7 +163,7 @@ class LinkForm(forms.ModelForm):
             'menu'      : forms.Select(attrs={'class': 'form-control vTextField'}),
             'title'     : forms.TextInput(attrs={'class': 'form-control vTextField', 'maxlength': 150, 'placeholder': _('Title')}),
             'page'      : forms.Select(attrs={'class': 'form-control vTextField'}),
-            'url_name'  : forms.TextInput(attrs={'class': 'form-control vTextField', 'maxlength': 255, 'placeholder': 'Example: app.modules.pages:pages.home'}),
+            'url_name'  : forms.TextInput(attrs={'class': 'form-control vTextField', 'maxlength': 255, 'placeholder': 'Example: mayacms.contrib.pages:pages.home'}),
             'url'       : forms.TextInput(attrs={'class': 'form-control vTextField', 'maxlength': 255, 'placeholder': 'Example: about/company'}),
             'parent'    : forms.Select(attrs={'class': 'form-control vTextField'}),
             'target'    : forms.Select(attrs={'class': 'form-control vTextField'}),

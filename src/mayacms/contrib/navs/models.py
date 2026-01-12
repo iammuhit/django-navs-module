@@ -3,8 +3,8 @@ from django.urls import NoReverseMatch, reverse
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 
-from app.modules.navs import DB_TABLE_PREFIX
-from app.modules.pages.models import Page
+from mayacms.contrib.navs import DB_TABLE_PREFIX
+from mayacms.contrib.pages.models import Page
 
 
 class Menu(models.Model):

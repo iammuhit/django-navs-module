@@ -1,6 +1,6 @@
 from django import template
 
-from app.modules.navs.models import Menu
+from mayacms.contrib.navs.models import Menu
 
 register = template.Library()
 
