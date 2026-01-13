@@ -1,16 +1,28 @@
+## Byte-compiled / Optimized / DLL Files
+*.pyc
+*.pyo
+__pycache__
+
+## Distribution / Packaging
+*.egg
+*.egg-info/
+build/
+dist/
+
 ## Environments
 .env
+.envrc
 .venv/*
 
 ## Django Framework
 *.log
-*.pot
-*.pyc
-*.egg-info
-__pycache__
+*_settings.py
 db.sqlite3
-media/*
-build/*
+db.sqlite3-journal
+
+## Translations
+*.mo
+*.pot
 
 ## PyCharm IDE
 .idea/*
@@ -22,6 +34,7 @@ build/*
 !.vscode/launch.json
 !.vscode/extensions.json
 !.vscode/*.code-snippets
+!*.code-workspace
 
 # Local History for Visual Studio Code
 .history/
