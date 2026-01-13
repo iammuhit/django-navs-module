@@ -12,7 +12,7 @@ where = ["src"]
 include = ["mayacms*"]
 
 [tool.setuptools.package-data]
-"mayacms.contrib.navs" = [ "static/**", "templates/**"]
+"mayacms.contrib.navs" = ["static/**", "templates/**"]
 
 [tool.setuptools.dynamic]
 version = {attr = "mayacms.contrib.navs.__version__"}
